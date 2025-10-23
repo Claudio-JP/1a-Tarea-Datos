@@ -26,7 +26,7 @@ goodread_SW <- goodread_SW %>% rename(titulo = Title,
 goodread_SW_10 <- goodread_SW %>% arrange(desc(calif_promedio)) %>%
                                head(10)
                                
-#### Con los datos ya ordenados y filtrados, se construye un gráfico que muestre la cantidad de ratings y ratings escritos para el top 10 de libros de Star Wars en la base de datos, ordenados de manera ascendente según su calificación promedio
+#### Con los datos ya ordenados y filtrados, se construye un gráfico que muestre la cantidad de ratings y ratings escritos para el top 10 de libros de Star Wars en la base de datos, ordenados de manera ascendente (abajo se encuentra el top 1) según su calificación promedio
 
 grafico_sw <- temp_data %>%
   pivot_longer(cols = c(conteo_calif, conteo_calif_text), 
