@@ -36,3 +36,17 @@ grafico_sw <- temp_data %>%
   theme_minimal() +
   labs(title = "Top 10 Libros Star Wars", y = "Reviews", x = "") +
   theme(axis.text.y = element_text(size = 8))
+  
+print(grafico_sw)
+
+
+#Como se percibe en el gráfico, ordenado de manera descendente en cuando a su promedio de calificación, pareciera existir una relación inversamente proporcional entre el rating promedio del libro y la cantidad de calificaciones que textuales y no textuales que reciben. Para explorar un poco más esta relación, se procede a calcular la correlación entre las variables mencionadas
+cor_1 <- cor(as.numeric(goodread_SW_10$conteo_calif), as.numeric(goodread_SW_10$calif_promedio)) #-0.607
+cor_2 <- cor(as.numeric(goodread_SW_10$conteo_calif_text), as.numeric(goodread_SW_10$calif_promedio)) #-0.442
+#Los resultados obtenidos generan curiosidad con respecto a la relación entre las variables en toda la base de datos. Por tanto, se realizarán los mismos cálculos para todos los libros de SW
+cor_3 <- cor(as.numeric(goodread_SW$conteo_calif), as.numeric(goodread_SW$calif_promedio)) #-0.107
+cor_4 <- cor(as.numeric(goodread_SW$conteo_calif_text), as.numeric(goodread_SW$calif_promedio)) #-0.022
+#Curiosamente, la relación entre las variables baja significativamente en intensidad al considerar la totalidad de libros de Star Wars. Para culminar la obtención de datos y pasar a un breve análisis, se obtienen los mismos cálculos para todos los libros en la base de datos
+cor_c <- cor(as.numeric(goodread_clean$"rating count"), as.numeric(goodread_clean$avg_rating), use = "complete.obs") #0.035
+cor_ct <- cor(as.numeric(goodread_clean$"text reviews count"), as.numeric(goodread_clean$avg_rating), use = "complete.obs") #0.031
+#Estos resultados demuestran algunos puntos interesantes: en primer lugar, no hay una relación entre la cantidad de ratings y la valoración del libro. O sea, que más personas hayan leído el libro no significa que sea mejor. En segundo lugar, pareciera que, para el top 10 de Star Wars, los libros más masivos convocan también a lectores más casuales, que podrían dar calificaciones más bajas a estos libros, bajando su calificación promedio comparado a libros de menor convocatoria.
