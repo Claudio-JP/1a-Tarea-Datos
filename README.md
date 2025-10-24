@@ -1,5 +1,5 @@
 ## Visualización de top Libros de Star Wars y análisis de relación entre cantidad de reviews y calificación
-### El presente trabajo se desarrolló principalmente debido al gran interés personal por la lectura. Uno de mis principales hobbies desde que tengo memoria es la lectura, principalmente de ficción, por lo que me interesó aprovechar este espacio para explorar un poco más algunos datos disponibles sobre este hobby.Inicialmente, el presente proyecto comenzó con el interés de hacer un estudio sobre los libros de Star Wars registrados en la base. Empero, los resultados obtenidos (y exploraciones de la base de datos no registradas acá) fueron generando un mayor interés por las relaciones entre las distintas variables de interés consideradas: la calificación promedio, el conteo de calificaciones, y las calificaciones de texto por cada libro. Así, se realiza un trabajo de análisis exploratorio sobre estas variables.
+### El presente trabajo se desarrolló principalmente debido al gran interés personal por la lectura. Uno de mis principales hobbies desde que tengo memoria es la lectura, principalmente de ficción, por lo que me interesó aprovechar este espacio para explorar un poco más algunos datos disponibles sobre este hobby. Inicialmente, el presente proyecto comenzó con el interés de hacer un estudio sobre los libros de Star Wars registrados en la base. Empero, los resultados obtenidos (y exploraciones de la base de datos no registradas acá) fueron generando un mayor interés por las relaciones entre las distintas variables de interés consideradas: la calificación promedio, el conteo de calificaciones, y las calificaciones de texto por cada libro. Así, se realiza un trabajo de análisis exploratorio sobre estas variables.
 ### Para esto, se utiliza una base de datos sobre libros disponible en Kaggle, construida a partir de la API de Goodreads, la cual fue descontinuada en 2020.
 
 #### Primero, se incorporan los paquetes que serán necesarios:
@@ -61,7 +61,7 @@ cor_2 <- cor(as.numeric(goodread_SW_10$conteo_calif_text), as.numeric(goodread_S
 
 #### Los resultados obtenidos generan curiosidad con respecto a la relación más amplia entre las variables. Por tanto, se realizarán los mismos cálculos para todos los libros de Star Wars:
 
-#### ###### correlación entre el n° de calificaciones y la calificación promedio
+###### correlación entre el n° de calificaciones y la calificación promedio
 cor_3 <- cor(as.numeric(goodread_SW$conteo_calif), as.numeric(goodread_SW$calif_promedio)) 
 ##### -0.107
 
@@ -71,7 +71,7 @@ cor_4 <- cor(as.numeric(goodread_SW$conteo_calif_text), as.numeric(goodread_SW$c
 
 #### Curiosamente, la relación entre las variables baja significativamente en intensidad al considerar la totalidad de libros de Star Wars. Para extender más el análisis, se obtienen los mismos cálculos para todos los libros en la base de datos:
 
-##### correlación entre el n° de calificaciones y la calificación promedio global
+###### correlación entre el n° de calificaciones y la calificación promedio global
 cor_c <- cor(as.numeric(goodread_clean$conteo_calif), as.numeric(goodread_clean$calif_promedio), use = "complete.obs") 
 ##### 0.035
 
@@ -92,10 +92,13 @@ grafico_t10 <- goodread_top_10 %>%
   coord_flip() +
   theme_minimal() +
   labs(title = "Top 10 Libros GoodReads", y = "Reviews", x = "") +
-  theme(axis.text.y = element_text(size = 8))                             
+  theme(axis.text.y = element_text(size = 8))   
+  
 print(grafico_t10)
 
-### Los resultados obtenidos generan más preguntas que respuestas con respecto a la relación que existe entre las variables de calificación promedio y cantidad de calificaciones (y calificaciones de texto). Es posible que aquellas que tengan una mayor calificación tengan por explicación, precisamente, la poca cantidad de reviews, las cuales serían solo de fans ávidos de la temática o universo particular, mientras que aquellos que tienden a ser más reconocidos por la opinión pública como mejores libros (LoTR, Harry Potter, etc.) tienden a percibir su promedio de calificación reducido por una mayor variedad. Por tanto, y como paso final de análisis, se realizará un gráfico para los top 10 libros con más reviews y reviews escritas, ilustrando su calificación promedio.
+<img width="1798" height="370" alt="image" src="https://github.com/user-attachments/assets/7bc306b4-b6c2-4961-ab47-411fff29a120" />
+
+### Los resultados obtenidos generan más preguntas que respuestas con respecto a la relación que existe entre las variables de calificación promedio y cantidad de calificaciones (y calificaciones de texto). Es posible que aquellos libros que tengan una mayor calificación, perciban una inflación en su promedio, precisamente, por la poca cantidad de reviews, las cuales serían solo de fans ávidos de la temática o universo particular, mientras que aquellos que tienden a ser más reconocidos como mejores libros (LoTR, Harry Potter, etc.) tienden a percibir su promedio de calificación reducido por una mayor variedad de reviews. Por tanto, y como paso final de análisis, se realizará un gráfico para los top 10 libros con más reviews y reviews escritas, ilustrando su calificación promedio.
 
 goodread_clean <- goodread_clean %>% mutate(total_calif = conteo_calif + conteo_calif_text)
 
@@ -110,21 +113,25 @@ top_reviews <- top_reviews %>%
   na.omit()                
   
 grafico_calif_promedio <- top_reviews %>%
-  ggplot(aes(x = calif_promedio, y = reorder(titulo, -total_calif))) +  # Invertir ejes y ordenar por total_calif
-  geom_col(fill = "#1f77b4") +  # Barras con color azul
+  ggplot(aes(x = calif_promedio, y = reorder(titulo, -total_calif))) +  
+  geom_col(fill = "#1f77b4") +  
   theme_minimal() +
   labs(title = "Calificación promedio de los 10 libros con mayor conteo de reviews",
        x = "Calificación Promedio", y = "") +
   theme(axis.text.y = element_text(size = 8)) +
-  # Agregar conteo total como etiquetas a la derecha de las barras
   geom_text(aes(label = round(total_calif, 0), x = calif_promedio + 0.05), 
             hjust = 0, size = 3)
 
 print(grafico_calif_promedio)
 
+<img width="1798" height="370" alt="image" src="https://github.com/user-attachments/assets/2f1a4959-b416-4f04-af63-46142b50428f" />
+
+##### Se calculan elementos relevantes para el análisis
+
 prom_calif <- sum(top_reviews$calif_promedio) / 10
+
 desviacion_estandar <- sd(top_reviews$calif_promedio, na.rm = TRUE)
 
-### El gráfico obtenido nos permite obtener ciertos valores interesantes para el análisis de la relación entre las variables. De particular interés son el promedio de las calificaciones promedio para estos libros, y la desviación estándar del conjunto con respecto a este promedio. El promedio de calificaciones es de 4.099, mientras que la desviación estándar es de 0.359. Esto ilustra el relativo equilibrio que genera en torno a la calificación promedio la existencia de una gran cantidad de calificaciones para los principales libros, ya que una mayor variedad implicaría una mayor presencia tanto de fans del tópico o universo, como de críticos o fans casuales que podrían no tener una visión tan positiva. Ciertamente, las relaciones entre las variables de interés del presente trabajo requieren de estudios más profundos, pero estos quedarán para futuros trabajos y tareas... posiblemente. 
+### El gráfico obtenido nos permite obtener ciertos valores interesantes para el análisis de la relación entre las variables. De particular interés son el promedio de las calificaciones promedio para estos libros, y la desviación estándar del conjunto con respecto a este promedio. El promedio de calificaciones es de 4.099, mientras que la desviación estándar es de 0.359. Esto ilustra el relativo equilibrio que genera en torno a la calificación promedio la existencia de una gran cantidad de calificaciones para los principales libros, ya que una mayor variedad implicaría una mayor presencia tanto de fans del tópico o universo, como de críticos o fans casuales que podrían no tener una visión tan positiva. Ciertamente, las relaciones entre las variables de interés del presente trabajo requieren de estudios más profundos, pero estos quedarán para futuros trabajos y tareas. 
 
 ##### N del T: no queda claro porqué los códigos quedan guardados en formato de texto en vez de como código. Este error se corregirá para futuras entregas.
