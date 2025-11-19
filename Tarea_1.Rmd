@@ -1,4 +1,9 @@
-
+---
+title: "Tarea 1"
+author: "Corrección Soledad Araya"
+date: "2025-11-19"
+output: html_document
+---
 
 # Visualización de top Libros de Star Wars y análisis de relación entre cantidad de reviews y calificación
 
@@ -82,7 +87,9 @@ grafico_sw <- goodread_SW_10 %>%
 grafico_sw
 ```
 
-![](/plots/top_10_libros_starwars.png)
+```{r}
+ggsave("plots/top_10_libros_starwars.png", height = 5, width = 7)
+```
 
 Como se percibe en el gráfico, pareciera existir una relación **inversamente proporcional** entre el rating promedio del libro y la cantidad de calificaciones textuales y no textuales que reciben.
 
@@ -155,8 +162,9 @@ grafico_t10 <- goodread_top_10 %>%
 grafico_t10
 ```
 
-![](/plots/top_10_libros_goodreads.png.png)
-
+```{r}
+ggsave("plots/top_10_libros_goodreads.png", height = 5, width = 8)
+```
 
 Los resultados obtenidos generan más preguntas que respuestas con respecto a la relación que existe entre las variables de calificación promedio y cantidad de calificaciones (y calificaciones de texto).
 
@@ -198,8 +206,9 @@ grafico_calif_promedio <- top_reviews %>%
 grafico_calif_promedio
 ```
 
-![](/plots/top_10_libros_mayor_reviews.png)
-
+```{r}
+ggsave("plots/top_10_libros_mayor_reviews.png", height = 5, width = 10)
+```
 
 Se calculan elementos relevantes para el análisis
 
@@ -210,7 +219,6 @@ prom_calif <- sum(top_reviews$calif_promedio) / 10
 ```{r}
 sd(top_reviews$calif_promedio, na.rm = TRUE)
 ```
-
 El gráfico obtenido nos permite obtener ciertos valores interesantes para el análisis de la relación entre las variables. De particular interés son el promedio de las calificaciones promedio para estos libros, y la desviación estándar del conjunto con respecto a este promedio.
 
 El **promedio de calificaciones es de 4.0**, mientras que la **desviación estándar es de 0.35**. Esto ilustra el relativo equilibrio que genera en torno a la calificación promedio la existencia de una gran cantidad de calificaciones para los principales libros, ya que una mayor variedad implicaría una mayor presencia tanto de fans del tópico o universo, como de críticos o fans casuales que podrían no tener una visión tan positiva.
